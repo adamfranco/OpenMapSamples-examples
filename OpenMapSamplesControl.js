@@ -2,6 +2,7 @@
 
 import { addProtocol } from 'maplibre-gl';
 import './OpenMapSamplesControl.css';
+import Layer from "openmapsamples/lib/Layer";
 
 /**
  * An example Sample class with function definitions.
@@ -123,9 +124,13 @@ export default class SampleControl {
     description.textContent = sample.getDescription();
     this._sampleControls.appendChild(description);
 
-    // Provide back/forward controls for each sample.
-
+    // Save default source data.
+    this.saveOriginalStyle();
     // Replace default data with sample data.
+    this.replaceStyleWithSampleData(sample);
+    // Jump to our starting zoom/location.
+    this._map.setCenter(sample.getCenter());
+    this._map.setZoom(sample.getZoom());
   }
 
   clearDisplayedSample() {
@@ -134,6 +139,65 @@ export default class SampleControl {
     // Remove the sample data.
 
     // Restore the original data.
+    this.restoreOriginalStyle();
+  }
+
+  saveOriginalStyle() {
+    if (!this.originalStyle) {
+      this.originalStyle = this._map.getStyle();
+    }
+  }
+
+  restoreOriginalStyle() {
+    this._map.setStyle(this.originalStyle);
+    delete this.originalStyle;
+  }
+
+  replaceStyleWithSampleData(sample) {
+    var map = this._map;
+    var style = this._map.getStyle();
+
+    // Load a GeoJSON object and then filter what data is returned based off the feature's`layerId` property
+    addProtocol('openmapsamples-' + sample.getId(), (params, cb) => {
+      // console.log(params);
+      const chunks = params.url.split('/');
+      const layerId = chunks[2];
+      if (sample.hasLayer(layerId)) {
+        var ret = sample.getLayer(layerId).getGeoJson(map.getZoom());
+      } else {
+        // Return empty data.
+        var ret = new Layer().getGeoJson(map.getZoom());
+      }
+      // console.log('openmapsamples-' + sample.getId(), { layerId, params, ret, chunks });
+      return cb(null, ret);
+    });
+
+    var originalSourceIds = [];
+    for (const layer of style.layers) {
+      const layerId = layer['id'];
+      const sourceId = layer['source'];
+      const sourceLayerId =  layer['source-layer'];
+      if (layerId && sourceId && sourceLayerId) {
+        originalSourceIds.push(sourceId);
+        // Swap the current source with our sample source.
+        const sampleSourceId = 'openmapsamples-' + sample.getId() + '-' + sourceLayerId;
+        style.sources[sampleSourceId] = {
+          type: 'geojson',
+          data: `openmapsamples-${sample.getId()}://${sourceLayerId}`,
+        };
+
+        layer['source'] = sampleSourceId;
+        // geojson objects dont support 'source-layer'
+        delete layer['source-layer'];
+      }
+    }
+
+    // Clear out the original vector tile sources from the style.
+    for (const originalSourceId in originalSourceIds) {
+      delete style.sources[originalSourceId];
+    }
+
+    this._map.setStyle(style);
   }
 
 }

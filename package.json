@@ -28,6 +28,7 @@
     "openmapsamples": "github:adamfranco/OpenMapSamples"
   },
   "devDependencies": {
-    "parcel": "^2.2.1"
+    "parcel": "^2.2.1",
+    "parcel-plugin-nuke-dist": "^1.0.1"
   }
 }
