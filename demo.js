@@ -1,8 +1,9 @@
 import { Map, addProtocol } from 'maplibre-gl';
 import SampleControl from './OpenMapSamplesControl';
-import SampleSet from "openmapsamples/lib/SampleSet";
-import ExampleSample from "openmapsamples/lib/Sample/ExampleSample";
-import SimpleSample from "openmapsamples/lib/Sample/SimpleSample";
+import Sample from "openmapsamples/lib/Sample";
+import Layer from "openmapsamples/lib/Layer";
+import ExampleSampleData from "openmapsamples/lib/SampleData/ExampleSampleData";
+import SimpleSampleData from "openmapsamples/lib/SampleData/SimpleSampleData";
 
 const m = new Map({ container: 'map', center: [-109.05, 41.0], zoom: 3 });
 
@@ -21,9 +22,14 @@ async function main() {
   );
 
   m.setStyle(style);
-  var exampleSample = new ExampleSample();
-  exampleSet.addSample(exampleSample);
-  sampleControl.addSampleSet(exampleSet);
+
+  var sampleControl = new SampleControl();
+
+  var sample = sampleControl.addSample(
+    new Sample('example', 'Example', 'This is an example sample.')
+  );
+  var sampleLayer = sample.addLayer(new Layer('place'));
+  sampleLayer.addSampleData(new ExampleSampleData());
 
   m.addControl(sampleControl, 'bottom-left');
 }

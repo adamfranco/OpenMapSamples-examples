@@ -9,22 +9,26 @@ import './OpenMapSamplesControl.css';
 export default class SampleControl {
 
   constructor (options = {}) {
-    this.sampleSets = [];
+    this.samples = {};
     this.options = options;
   }
 
-  addSampleSet(sampleSet) {
-    if (typeof sampleSet.getName !== "function") {
-      throw "SampleSets must implement getName().";
+  addSample(sample) {
+    if (typeof sample.getId !== "function") {
+      throw "Samples must implement getId().";
     }
-    if (typeof sampleSet.getDescription !== "function") {
-      throw "SampleSets must implement getDescription().";
+    if (typeof sample.getName !== "function") {
+      throw "Samples must implement getName().";
     }
-    if (typeof sampleSet.getSamples !== "function") {
-      throw "SampleSets must implement getSamples().";
+    if (typeof sample.getDescription !== "function") {
+      throw "Samples must implement getDescription().";
+    }
+    if (typeof sample.getLayers !== "function") {
+      throw "Samples must implement getLayers().";
     }
 
-    this.sampleSets.push(sampleSet);
+    this.samples[sample.getId()] = sample;
+    return sample;
   }
 
   onAdd(map) {
@@ -66,13 +70,13 @@ export default class SampleControl {
     this._button.style.display = 'none';
     this._controls.style.display = 'block';
 
-    if (!this._setsMenu) {
-      this.initializeSetsMenu();
+    if (!this._samplesMenu) {
+      this.initializeSamplesMenu();
     }
-    if (!this._setControls) {
-      this._setControls = document.createElement('div');
-      this._setControls.className = 'openmapsamples-set-controls';
-      this._controls.appendChild(this._setControls);
+    if (!this._sampleControls) {
+      this._sampleControls = document.createElement('div');
+      this._sampleControls.className = 'openmapsamples-sample-controls';
+      this._controls.appendChild(this._sampleControls);
     }
 
   }
@@ -82,49 +86,50 @@ export default class SampleControl {
     this._controls.style.display = 'none';
   }
 
-  initializeSetsMenu() {
-    this._setsMenu = document.createElement('select');
-    this._setsMenu.className = 'openmapsamples-control-sets-menu';
-    this._controls.appendChild(this._setsMenu);
+  initializeSamplesMenu() {
+    this._samplesMenu = document.createElement('select');
+    this._samplesMenu.className = 'openmapsamples-control-samples-menu';
+    this._controls.appendChild(this._samplesMenu);
     this._chooseOrClear = document.createElement('option');
     this._chooseOrClear.value = '';
-    this._chooseOrClear.textContent = "Choose a Sample Set...";
-    this._setsMenu.appendChild(this._chooseOrClear);
-    this.sampleSets.forEach((sampleSet, i) => {
+    this._chooseOrClear.textContent = "Choose a Sample...";
+    this._samplesMenu.appendChild(this._chooseOrClear);
+    for (const id in this.samples) {
+      var sample = this.samples[id];
       var option = document.createElement('option');
-      option.value = i;
-      option.textContent = sampleSet.getName();
-      this._setsMenu.appendChild(option);
-    });
+      option.value = id;
+      option.textContent = sample.getName();
+      this._samplesMenu.appendChild(option);
+    };
 
-    this._setsMenu.onchange = this.chooseSet.bind(this);
+    this._samplesMenu.onchange = this.chooseSample.bind(this);
   }
 
-  chooseSet() {
-    if (this._setsMenu.value == '') {
-      this.clearDisplayedSampleSet();
-      this._chooseOrClear.textContent = "Choose a Sample Set...";
+  chooseSample() {
+    if (this._samplesMenu.value == '') {
+      this.clearDisplayedSample();
+      this._chooseOrClear.textContent = "Choose a Sample...";
     } else {
-      this.displaySampleSet(this.sampleSets[this._setsMenu.value]);
+      this.displaySample(this.samples[this._samplesMenu.value]);
       this._chooseOrClear.textContent = "Clear...";
     }
 
   }
 
-  displaySampleSet(sampleSet) {
-    this._setControls.innerHTML = '';
+  displaySample(sample) {
+    this._sampleControls.innerHTML = '';
     var description = document.createElement('div');
-    description.className = 'openmapsamples-set-description';
-    description.textContent = sampleSet.getDescription();
-    this._setControls.appendChild(description);
+    description.className = 'openmapsamples-sample-description';
+    description.textContent = sample.getDescription();
+    this._sampleControls.appendChild(description);
 
     // Provide back/forward controls for each sample.
 
     // Replace default data with sample data.
   }
 
-  clearDisplayedSampleSet() {
-    this._setControls.innerHTML = '';
+  clearDisplayedSample() {
+    this._sampleControls.innerHTML = '';
 
     // Remove the sample data.
 
