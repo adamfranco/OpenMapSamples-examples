@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "description": "Provides an OpenMapSamples control in MapLibre",
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "test": "node scripts/test.js"
+    "start": "parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -27,5 +26,8 @@
   "dependencies": {
     "maplibre-gl": "^2.1.0",
     "openmapsamples": "github:adamfranco/OpenMapSamples"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.1"
   }
 }
