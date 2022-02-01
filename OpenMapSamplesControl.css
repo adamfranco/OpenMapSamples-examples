@@ -1,0 +1,18 @@
+.openmapsamples-control-overlay {
+  background-color: white;
+  padding: 0.5em;
+  min-width: 10em;
+  min-height: 10em;
+}
+
+.openmapsamples-control-closer {
+  float: right;
+}
+
+.openmapsamples-control-title {
+  margin-top: 0;
+}
+
+.openmapsamples-control-sets-menu {
+  min-width: 15em;
+}
