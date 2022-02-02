@@ -124,9 +124,9 @@ export default class SampleControl {
     description.textContent = sample.getDescription();
     this._sampleControls.appendChild(description);
 
-    // Save default source data.
+    // Save default source data and replace with sample data.
+    this.restoreOriginalStyle();
     this.saveOriginalStyle();
-    // Replace default data with sample data.
     this.replaceStyleWithSampleData(sample);
     // Jump to our starting zoom/location.
     this._map.setCenter(sample.getCenter());
@@ -149,8 +149,10 @@ export default class SampleControl {
   }
 
   restoreOriginalStyle() {
-    this._map.setStyle(this.originalStyle);
-    delete this.originalStyle;
+    if (this.originalStyle) {
+      this._map.setStyle(this.originalStyle);
+      delete this.originalStyle;
+    }
   }
 
   replaceStyleWithSampleData(sample) {
