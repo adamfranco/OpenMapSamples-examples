@@ -4,3 +4,12 @@ OpenMapSamples is a library to generate and provide sample data for testing vect
 
 The OpenMapSamples-MapLibre package provides a MapLibre control and integration
 that allows OpenMapSamples to be rendered in MapLibre.
+
+## Developement and demo.
+
+Edit demo.js and add a personal MapTiler cloud key.
+
+```
+npm install
+npm start
+```

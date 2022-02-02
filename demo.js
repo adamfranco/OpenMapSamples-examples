@@ -13,6 +13,7 @@ async function loadStyle(url) {
   return res.json();
 }
 
+// Add a MapTiler API key here:
 const apiKey = '';
 
 async function main() {
