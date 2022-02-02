@@ -114,7 +114,6 @@ export default class SampleControl {
       this.displaySample(this.samples[this._samplesMenu.value]);
       this._chooseOrClear.textContent = "Clear...";
     }
-
   }
 
   displaySample(sample) {
@@ -123,6 +122,30 @@ export default class SampleControl {
     description.className = 'openmapsamples-sample-description';
     description.textContent = sample.getDescription();
     this._sampleControls.appendChild(description);
+
+    var label = document.createElement('label');
+    label.htmlFor = 'openmapsamples-variant-select';
+    label.textContent = "Variants: ";
+    this._sampleControls.appendChild(label);
+
+    this._variantSelect = document.createElement('select');
+    this._variantSelect.className = 'openmapsamples-variant-select';
+    this._variantSelect.id = 'openmapsamples-variant-select';
+    this._sampleControls.appendChild(this._variantSelect);
+    this.variant = sample.getZoom();
+    const zoomVariants = sample.getZoomVariants();
+    console.log(zoomVariants);
+    var keys = Object.keys(zoomVariants);
+    keys.sort((n1,n2) => n1 - n2)
+    keys.forEach((key) => {
+      var option = document.createElement('option');
+      option.value = key;
+      option.textContent = 'z=' + key;
+      this._variantSelect.appendChild(option);
+    });
+    this._variantSelect.value = this.variant;
+    this._variantSelect.onchange = this.changeVariant.bind(this, sample);
+
 
     // Save default source data and replace with sample data.
     this.restoreOriginalStyle();
@@ -156,7 +179,7 @@ export default class SampleControl {
   }
 
   replaceStyleWithSampleData(sample) {
-    var map = this._map;
+    var sampleControl = this;
     var style = this._map.getStyle();
 
     // Load a GeoJSON object and then filter what data is returned based off the feature's`layerId` property
@@ -164,11 +187,12 @@ export default class SampleControl {
       // console.log(params);
       const chunks = params.url.split('/');
       const layerId = chunks[2];
+      const zoom = sampleControl.getSampleZoom(sample);
       if (sample.hasLayer(layerId)) {
-        var ret = sample.getLayer(layerId).getGeoJson(map.getZoom());
+        var ret = sample.getLayer(layerId).getGeoJson(zoom);
       } else {
         // Return empty data.
-        var ret = new Layer().getGeoJson(map.getZoom());
+        var ret = new Layer().getGeoJson(zoom);
       }
       // console.log('openmapsamples-' + sample.getId(), { layerId, params, ret, chunks });
       return cb(null, ret);
@@ -200,6 +224,37 @@ export default class SampleControl {
     }
 
     this._map.setStyle(style);
+  }
+
+  /**
+   * Answer the zoom to use for loading sample data.
+   *
+   */
+  getSampleZoom(sample) {
+    let variants = sample.getZoomVariants();
+    if (variants && variants[this.variant]) {
+      return this.variant;
+    } else {
+      return sample.getZoom();
+    }
+  }
+
+  /**
+   * Change the selected variant.
+   *
+   */
+  changeVariant(sample) {
+    if (this.variant != this._variantSelect.value) {
+      this.variant = this._variantSelect.value;
+
+      // Save default source data and replace with sample data.
+      this.restoreOriginalStyle();
+      this.saveOriginalStyle();
+      this.replaceStyleWithSampleData(sample);
+      // Jump to our starting zoom/location.
+      this._map.setCenter(sample.getZoomVariantCenter(this.variant));
+      this._map.setZoom(this.variant);
+    }
   }
 
 }
