@@ -3,8 +3,9 @@ import SampleControl from './OpenMapSamplesControl';
 import Sample from "openmapsamples/lib/Sample";
 import Layer from "openmapsamples/lib/Layer";
 import { ExamplePlaceData, ExampleTransportationData } from "openmapsamples/lib/SampleData/ExampleSampleData";
+import highwayAttributesSample from "openmapsamples/samples/OpenMapTiles/HighwayAttributes";
 
-const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 });
+const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 , hash: true});
 
 async function loadStyle(url) {
   const res = await fetch(url);
@@ -24,6 +25,8 @@ async function main() {
 
   // Add our sample data.
   let sampleControl = new SampleControl();
+
+  sampleControl.addSample(highwayAttributesSample);
 
   let sample = sampleControl.addSample(
     new Sample('example', 'Example', 'This is an example sample.', [-100.85664, 39.71282], 7)
