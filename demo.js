@@ -2,8 +2,7 @@ import { Map, addProtocol } from 'maplibre-gl';
 import SampleControl from './OpenMapSamplesControl';
 import Sample from "openmapsamples/lib/Sample";
 import Layer from "openmapsamples/lib/Layer";
-import ExampleSampleData from "openmapsamples/lib/SampleData/ExampleSampleData";
-import SimpleSampleData from "openmapsamples/lib/SampleData/SimpleSampleData";
+import { ExamplePlaceData, ExampleTransportationData } from "openmapsamples/lib/SampleData/ExampleSampleData";
 
 const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 });
 
@@ -30,59 +29,21 @@ async function main() {
     new Sample('example', 'Example', 'This is an example sample.', [-100.85664, 39.71282], 7)
   );
   sample.addLayer(new Layer('place'))
-    .addSampleData(new ExampleSampleData());
-  var transportation = new SimpleSampleData(
-    {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "LineString",
-            "coordinates": [
-              [-103.1, 40.3],
-              [-100.1, 40.1],
-              [-99.9, 39.8],
-            ]
-           },
-           "properties": {
-             "class": "trunk",
-             "oneway": 0,
-             "ramp": 0,
-             "surface": "paved",
-             "name": "Captain Picard Highway",
-             "name_en": "Captain Picard Highway",
-             "ref": "999",
-             "network": "us-highway",
-           }
-        },
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "LineString",
-            "coordinates": [
-              [-99.9, 40.1],
-              [-100.1, 39.9],
-            ]
-           },
-           "properties": {
-             "class": "primary",
-             "oneway": 0,
-             "ramp": 0,
-             "surface": "paved",
-             "name": "Captain Kirk Highway",
-             "name_en": "Captain Kirk Highway",
-             "ref": "998",
-             "network": "us-highway",
-           }
-        },
-      ]
-    }
-  );
+    .addSampleData(new ExamplePlaceData());
+  var transportation = new ExampleTransportationData();
   sample.addLayer(new Layer('transportation'))
     .addSampleData(transportation);
   sample.addLayer(new Layer('transportation_name'))
     .addSampleData(transportation);
+
+  let roads = sampleControl.addSample(
+    new Sample('roads-only', 'Roads Only', 'This is an example sample that only shows roads.', [-100.1, 40.0], 11)
+  );
+  var transportation2 = new ExampleTransportationData();
+  roads.addLayer(new Layer('transportation'))
+    .addSampleData(transportation2);
+  roads.addLayer(new Layer('transportation_name'))
+    .addSampleData(transportation2);
 
   m.addControl(sampleControl, 'bottom-left');
 }
