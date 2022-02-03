@@ -16,7 +16,7 @@ jobs:
     - run: node --version
 
     - name: Write .env
-      run: echo "MAP_TILER_API_KEY=${{ secrets.MAP_TILER_API_KEY }}" > .env
+      run: echo "MAPTILER_API_KEY=${{ secrets.MAPTILER_API_KEY }}" > .env
 
     - name: Install and build
       run: |
