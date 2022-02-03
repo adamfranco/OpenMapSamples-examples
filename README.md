@@ -20,3 +20,11 @@ After your `.env` file is in place you can start the demo with:
 ```
 npm start
 ```
+
+### Building the demo
+
+Running this command will build a self-contained build of the demo site in the `dist/` directory:
+
+```
+npm run build
+```
