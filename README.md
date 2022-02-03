@@ -7,9 +7,16 @@ that allows OpenMapSamples to be rendered in MapLibre.
 
 ## Developement and demo.
 
-Edit demo.js and add a personal MapTiler cloud key.
+Use `npm install --include=dev` to install all of the main dependencies and development dependencies.
+
+Add a file called `.env` in the project root and add a personal MapTiler cloud key like this:
+```
+MAPTILER_API_KEY=YourMapTileAPIKey
+```
+You can register a free MapTiler API Key at: https://cloud.maptiler.com/account/keys/
+
+After your `.env` file is in place you can start the demo with:
 
 ```
-npm install
 npm start
 ```

@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { Map, addProtocol } from 'maplibre-gl';
 import SampleControl from './OpenMapSamplesControl';
 import Sample from "openmapsamples/lib/Sample";
@@ -13,13 +14,11 @@ async function loadStyle(url) {
   return res.json();
 }
 
-// Add a MapTiler API key here:
-const apiKey = '';
 
 async function main() {
   const style = await loadStyle(
     'https://api.maptiler.com/maps/osm-standard/style.json?key=' +
-      apiKey
+      process.env.MAPTILER_API_KEY
   );
 
   m.setStyle(style);
