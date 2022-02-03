@@ -1,0 +1,39 @@
+name: Deploy Demo with Parcel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - run: node --version
+
+    - name: Install and build
+      env:
+        MAP_TILER_API_KEY: ${{ secrets.MAP_TILER_API_KEY }}
+      run: |
+        npm install --include=dev
+        npm run build
+        
+    - name: Simple GitHub Pages Deploy Action
+      # You may pin to the exact commit or the version.
+      # uses: rdarida/simple-github-pages-deploy-action@290913edc3f3978a087e0687a67a1cda044965c5
+      uses: rdarida/simple-github-pages-deploy-action@v1
+      with:
+        # Set git config user.name
+        git-user: github-action
+        # Set git config user.email
+        git-email: github-action@github.com
+        # Set the base folder for deploy
+        git-base-folder: dist
+        # Set the commit message
+        commit-message: Simple GitHub Pages Deploy Action
+        # Set the target branch for deployment
+        branch: gh-pages
