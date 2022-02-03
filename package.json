@@ -4,7 +4,7 @@
   "description": "Provides an OpenMapSamples control in MapLibre",
   "type": "module",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "rm -Rf .parcel-cache dist && parcel index.html"
   },
   "repository": {
     "type": "git",
