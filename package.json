@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
+    "maplibre-gl-inspect": "github:acalcutt/maplibre-gl-inspect",
     "parcel": "^2.2.1",
     "parcel-plugin-nuke-dist": "^1.0.1"
   }
