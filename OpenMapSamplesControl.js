@@ -120,7 +120,7 @@ export default class SampleControl {
     this._sampleControls.innerHTML = '';
     var description = document.createElement('div');
     description.className = 'openmapsamples-sample-description';
-    description.textContent = sample.getDescription();
+    description.innerHTML = sample.getDescription();
     this._sampleControls.appendChild(description);
 
     var label = document.createElement('label');

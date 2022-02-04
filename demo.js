@@ -29,7 +29,7 @@ async function main() {
   sampleControl.addSample(highwayAttributesSample);
 
   let sample = sampleControl.addSample(
-    new Sample('example', 'Example', 'This is an example sample.', [-100.85664, 39.71282], 7)
+    new Sample('example', 'Example', 'This is an example sample showing hand-crafted GeoJSON that mocks OpenMapTiles data. (<a href="https://github.com/adamfranco/OpenMapSamples/blob/main/lib/SampleData/ExampleSampleData.js">source</a>)', [-100.85664, 39.71282], 7)
   );
   sample.addLayer(new Layer('place'))
     .addSampleData(new ExamplePlaceData());
