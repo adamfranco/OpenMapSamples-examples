@@ -40,15 +40,6 @@ async function main() {
     .addSampleData(transportation);
   sample.setZoomVariant(10, [-100.1, 40.0])
 
-  let roads = sampleControl.addSample(
-    new Sample('roads-only', 'Roads Only', 'This is an example sample that only shows roads.', [-100.1, 40.0], 11)
-  );
-  var transportation2 = new ExampleTransportationData();
-  roads.addLayer(new Layer('transportation'))
-    .addSampleData(transportation2);
-  roads.addLayer(new Layer('transportation_name'))
-    .addSampleData(transportation2);
-
   m.addControl(sampleControl, 'bottom-left');
 }
 main();
