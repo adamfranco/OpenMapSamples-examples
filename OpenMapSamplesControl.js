@@ -158,9 +158,6 @@ export default class SampleControl {
 
   clearDisplayedSample() {
     this._sampleControls.innerHTML = '';
-
-    // Remove the sample data.
-
     // Restore the original data.
     this.restoreOriginalStyle();
   }
@@ -168,11 +165,15 @@ export default class SampleControl {
   saveOriginalStyle() {
     if (!this.originalStyle) {
       this.originalStyle = this._map.getStyle();
+      this.originalCenter = this._map.getCenter();
+      this.originalZoom = this._map.getZoom();
     }
   }
 
   restoreOriginalStyle() {
     if (this.originalStyle) {
+      this._map.setCenter(this.originalCenter);
+      this._map.setZoom(this.originalZoom);
       this._map.setStyle(this.originalStyle);
       delete this.originalStyle;
     }
