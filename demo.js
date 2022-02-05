@@ -5,8 +5,8 @@ import Sample from "openmapsamples/lib/Sample";
 import Layer from "openmapsamples/lib/Layer";
 import { ExamplePlaceData, ExampleTransportationData } from "openmapsamples/lib/SampleData/ExampleSampleData";
 import highwayAttributesSample from "openmapsamples/samples/OpenMapTiles/HighwayAttributes";
-import MaplibreInspect from "maplibre-gl-inspect";
-import "maplibre-gl-inspect/dist/maplibre-gl-inspect.css";
+// import MaplibreInspect from "maplibre-gl-inspect";
+// import "maplibre-gl-inspect/dist/maplibre-gl-inspect.css";
 
 const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 , hash: true});
 
@@ -44,11 +44,11 @@ async function main() {
 
   m.addControl(sampleControl, 'bottom-left');
 
-  m.addControl(new MaplibreInspect({
-    popup: new Popup({
-      closeButton: false,
-      closeOnClick: false
-    })
-  }));
+  // m.addControl(new MaplibreInspect({
+  //   popup: new Popup({
+  //     closeButton: false,
+  //     closeOnClick: false
+  //   })
+  // }));
 }
 main();
