@@ -35,10 +35,14 @@ export default class SampleControl {
   onAdd(map) {
     this._map = map;
     this._container = document.createElement('div');
-    this._container.className = 'mapboxgl-ctrl openmapsamples-control-container';
+    this._container.className = 'maplibregl-ctrl mapboxgl-ctrl openmapsamples-control-container';
 
+    var buttonWrapper = document.createElement('div');
+    buttonWrapper.className = 'maplibregl-ctrl-group mapboxgl-ctrl-group';
+    this._container.appendChild(buttonWrapper);
     this._button = document.createElement('button');
-    this._container.appendChild(this._button);
+    this._button.className = 'openmapsamples-control-button';
+    buttonWrapper.appendChild(this._button);
     this._button.textContent = 'Samples';
     this._button.onclick = this.showControls.bind(this);
 
@@ -49,7 +53,7 @@ export default class SampleControl {
     this._closer = document.createElement('button');
     this._closer.className = 'openmapsamples-control-closer';
     this._controls.appendChild(this._closer);
-    this._closer.textContent = 'x';
+    this._closer.textContent = '×';
     this._closer.onclick = this.hideControls.bind(this);
 
     this._title = document.createElement('h2');
