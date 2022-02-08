@@ -138,7 +138,6 @@ export default class SampleControl {
     this._sampleControls.appendChild(this._variantSelect);
     this.variant = sample.getZoom();
     const zoomVariants = sample.getZoomVariants();
-    console.log(zoomVariants);
     var keys = Object.keys(zoomVariants);
     keys.sort((n1,n2) => n1 - n2)
     keys.forEach((key) => {
@@ -189,7 +188,6 @@ export default class SampleControl {
 
     // Load a GeoJSON object and then filter what data is returned based off the feature's`layerId` property
     addProtocol('openmapsamples-' + sample.getId(), (params, cb) => {
-      // console.log(params);
       const chunks = params.url.split('/');
       const layerId = chunks[2];
       const zoom = sampleControl.getSampleZoom(sample);
