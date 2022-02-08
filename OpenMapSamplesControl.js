@@ -12,6 +12,12 @@ export default class SampleControl {
   constructor (options = {}) {
     this.samples = {};
     this.options = options;
+    if (this.options['permalinks']) {
+      this.permalinks = true;
+    }
+    else {
+      this.permalinks = false;
+    }
   }
 
   addSample(sample) {
@@ -63,6 +69,12 @@ export default class SampleControl {
 
     this.hideControls();
 
+    // Try loading our sampledata if specified in the url.
+    if (this.permalinks) {
+      setTimeout(this.setStateFromUrl.bind(this), 2000);
+      window.addEventListener("popstate", this.setStateFromUrl.bind(this));
+    }
+
     return this._container;
   }
 
@@ -91,6 +103,68 @@ export default class SampleControl {
     this._controls.style.display = 'none';
   }
 
+  updatePermalink() {
+    if (this.permalinks) {
+      var url = new URL(window.location.href);
+      // Add/remove the active sample state.
+      if (this.getActiveSampleId()) {
+        url.searchParams.set('omss', this.getActiveSampleId());
+        url.searchParams.set('omsv', this.getActiveSampleVariantId());
+      } else {
+        url.searchParams.delete('omss');
+        url.searchParams.delete('omsv');
+      }
+
+      var state = {
+        'hash': url.hash,
+        'omss':this.getActiveSampleId(),
+        'omsv': this.getActiveSampleVariantId(),
+      };
+      window.history.pushState(state, 'oms', url);
+    }
+  }
+
+  setStateFromUrl() {
+    if (this.permalinks) {
+      const url = new URL(window.location.href);
+
+      // Store incoming zoom and center for resetting after load of a sample.
+      var zoom = null;
+      var center = null;
+      const hash = window.location.hash.replace('#', '');
+      const parts = hash.split('/');
+      if (parts.length === 3 || parts.length === 4) {
+        zoom = parseFloat(parts[0]);
+        center = [
+          parseFloat(parts[2]),
+          parseFloat(parts[1]),
+        ];
+      }
+
+      const sampleId = url.searchParams.get('omss');
+      if (sampleId) {
+        this.showControls();
+        this.setActiveSampleId(sampleId);
+
+        const sampleVariantId = url.searchParams.get('omsv');
+        if (sampleVariantId) {
+          this.setActiveSampleVariantId(sampleVariantId);
+        }
+      } else if (this.getActiveSampleId()) {
+        this.clearDisplayedSample();
+      }
+
+
+      // Reset zoom from URL.
+      if (sampleId && zoom) {
+        this._map.setZoom(zoom);
+      }
+      if (sampleId && center) {
+        this._map.setCenter(center);
+      }
+    }
+  }
+
   initializeSamplesMenu() {
     this._samplesMenu = document.createElement('select');
     this._samplesMenu.className = 'openmapsamples-control-samples-menu';
@@ -110,13 +184,43 @@ export default class SampleControl {
     this._samplesMenu.onchange = this.chooseSample.bind(this);
   }
 
+  getActiveSampleId() {
+    if (this._samplesMenu) {
+      return this._samplesMenu.value;
+    } else {
+      return null;
+    }
+  }
+
+  getActiveSampleVariantId() {
+    if (this._variantSelect) {
+      return this._variantSelect.value;
+    } else {
+      return null;
+    }
+  }
+
+  setActiveSampleId(id) {
+    this._samplesMenu.value = id;
+    this.chooseSample();
+  }
+
+  setActiveSampleVariantId(id) {
+    if (this._variantSelect) {
+      this._variantSelect.value = id;
+      this.changeVariant(this.samples[this.getActiveSampleId()]);
+    }
+  }
+
   chooseSample() {
-    if (this._samplesMenu.value == '') {
+    if (this.getActiveSampleId() == '') {
       this.clearDisplayedSample();
       this._chooseOrClear.textContent = "Choose a Sample...";
+      this.updatePermalink();
     } else {
-      this.displaySample(this.samples[this._samplesMenu.value]);
+      this.displaySample(this.samples[this.getActiveSampleId()]);
       this._chooseOrClear.textContent = "Clear...";
+      this.updatePermalink();
     }
   }
 
@@ -257,6 +361,7 @@ export default class SampleControl {
       // Jump to our starting zoom/location.
       this._map.setCenter(sample.getZoomVariantCenter(this.variant));
       this._map.setZoom(this.variant);
+      this.updatePermalink();
     }
   }
 

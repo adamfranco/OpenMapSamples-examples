@@ -26,7 +26,7 @@ async function main() {
   m.setStyle(style);
 
   // Add our sample data.
-  let sampleControl = new SampleControl();
+  let sampleControl = new SampleControl({'permalinks': true});
 
   OpenMapTilesSamples.forEach((sample, i) => {
     sampleControl.addSample(sample);
