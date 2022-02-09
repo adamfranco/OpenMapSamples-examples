@@ -387,7 +387,7 @@ export default class SampleControl {
   }
 
   incrementVariant(sample) {
-    if (this._variantSelect.selectedIndex < this._variantSelect.options.length) {
+    if (this._variantSelect.selectedIndex < this._variantSelect.options.length - 1) {
       this._variantSelect.selectedIndex = this._variantSelect.selectedIndex + 1;
       this.changeVariant(sample);
     }
