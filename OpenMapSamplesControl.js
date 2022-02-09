@@ -236,6 +236,13 @@ export default class SampleControl {
     label.textContent = "Variants: ";
     this._sampleControls.appendChild(label);
 
+    this._previousVariantButton = document.createElement('button');
+    this._previousVariantButton.className = 'openmapsamples-variant-increment';
+    this._previousVariantButton.id = 'openmapsamples-variant-previous';
+    this._previousVariantButton.textContent = '◀︎';
+    this._previousVariantButton.onclick = this.decrementVariant.bind(this, sample);
+    this._sampleControls.appendChild(this._previousVariantButton);
+
     this._variantSelect = document.createElement('select');
     this._variantSelect.className = 'openmapsamples-variant-select';
     this._variantSelect.id = 'openmapsamples-variant-select';
@@ -253,6 +260,12 @@ export default class SampleControl {
     this._variantSelect.value = this.variant;
     this._variantSelect.onchange = this.changeVariant.bind(this, sample);
 
+    this._nextVariantButton = document.createElement('button');
+    this._nextVariantButton.className = 'openmapsamples-variant-increment';
+    this._nextVariantButton.id = 'openmapsamples-variant-next';
+    this._nextVariantButton.textContent = '►';
+    this._nextVariantButton.onclick = this.incrementVariant.bind(this, sample);
+    this._sampleControls.appendChild(this._nextVariantButton);
 
     // Save default source data and replace with sample data.
     this.restoreOriginalStyle();
@@ -362,6 +375,20 @@ export default class SampleControl {
       this._map.setCenter(sample.getZoomVariantCenter(this.variant));
       this._map.setZoom(this.variant);
       this.updatePermalink();
+    }
+  }
+
+  decrementVariant(sample) {
+    if (this._variantSelect.selectedIndex > 0) {
+      this._variantSelect.selectedIndex = this._variantSelect.selectedIndex - 1;
+      this.changeVariant(sample);
+    }
+  }
+
+  incrementVariant(sample) {
+    if (this._variantSelect.selectedIndex < this._variantSelect.options.length) {
+      this._variantSelect.selectedIndex = this._variantSelect.selectedIndex + 1;
+      this.changeVariant(sample);
     }
   }
 
