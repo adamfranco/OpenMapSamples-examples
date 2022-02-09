@@ -226,10 +226,6 @@ export default class SampleControl {
 
   displaySample(sample) {
     this._sampleControls.innerHTML = '';
-    var description = document.createElement('div');
-    description.className = 'openmapsamples-sample-description';
-    description.innerHTML = sample.getDescription();
-    this._sampleControls.appendChild(description);
 
     var label = document.createElement('label');
     label.htmlFor = 'openmapsamples-variant-select';
@@ -266,6 +262,11 @@ export default class SampleControl {
     this._nextVariantButton.textContent = '►';
     this._nextVariantButton.onclick = this.incrementVariant.bind(this, sample);
     this._sampleControls.appendChild(this._nextVariantButton);
+
+    var description = document.createElement('div');
+    description.className = 'openmapsamples-sample-description';
+    description.innerHTML = sample.getDescription();
+    this._sampleControls.appendChild(description);
 
     // Save default source data and replace with sample data.
     this.restoreOriginalStyle();
