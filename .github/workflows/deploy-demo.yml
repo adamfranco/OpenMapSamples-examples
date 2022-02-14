@@ -15,8 +15,8 @@ jobs:
 
     - run: node --version
 
-    - name: Write .env
-      run: echo "export default { MAPTILER_API_KEY: '${{ secrets.MAPTILER_API_KEY }}' };" > config.json
+    - name: Write config
+      run: cat config.example.js | sed "s/YourMapTilerAPIKey/${{ secrets.MAPTILER_API_KEY }}/" > config.js
 
     - name: Install and build
       run: |
