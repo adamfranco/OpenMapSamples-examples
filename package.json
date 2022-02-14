@@ -1,15 +1,16 @@
 {
-  "name": "openmapsamples-maplibre",
+  "name": "openmapsamples-examples",
   "version": "0.1.0",
-  "description": "Provides an OpenMapSamples control in MapLibre",
+  "description": "Provides an OpenMapSamples example site.",
   "type": "module",
   "scripts": {
+    "config": "if [ ! -f \"config.js\" ]; then cp config.example.js config.js; echo \"Edit config.js with your MAPTILER_API_KEY obtained at maptiler.com\"; fi",
     "start": "rm -Rf .parcel-cache dist && parcel index.html --open",
     "build": "rm -rf .parcel-cache dist && parcel build index.html --public-url ./"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adamfranco/OpenMapSamples-MapLibre.git"
+    "url": "git+https://github.com/adamfranco/OpenMapSamples-examples.git"
   },
   "keywords": [
     "osm",
@@ -21,17 +22,15 @@
   "author": "Adam Franco",
   "license": "LGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/adamfranco/OpenMapSamples-MapLibre/issues"
+    "url": "https://github.com/adamfranco/OpenMapSamples-examples/issues"
   },
-  "homepage": "https://github.com/adamfranco/OpenMapSamples-MapLibre#readme",
+  "homepage": "https://github.com/adamfranco/OpenMapSamples-examples#readme",
   "dependencies": {
-    "maplibre-gl": "^2.0",
-    "openmapsamples": "github:adamfranco/OpenMapSamples"
-  },
-  "devDependencies": {
-    "dotenv": "^16.0.0",
     "maplibre-gl-inspect": "github:acalcutt/maplibre-gl-inspect",
-    "parcel": "^2.2.1",
-    "parcel-plugin-nuke-dist": "^1.0.1"
+    "openmapsamples": "github:adamfranco/OpenMapSamples",
+    "openmapsamples-maplibre": "github:adamfranco/OpenMapSamples-MapLibre",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.3.1",
+    "path-browserify": "^1.0.1"
   }
 }

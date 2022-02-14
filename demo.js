@@ -1,12 +1,15 @@
-import 'dotenv/config'
+import config from "./config.js";
 import { Map, Popup } from 'maplibre-gl';
-import SampleControl from './OpenMapSamplesControl';
+import SampleControl from 'openmapsamples-maplibre/OpenMapSamplesControl';
 import Sample from "openmapsamples/lib/Sample";
 import Layer from "openmapsamples/lib/Layer";
 import { ExamplePlaceData, ExampleTransportationData } from "openmapsamples/lib/SampleData/ExampleSampleData";
 import { default as OpenMapTilesSamples } from "openmapsamples/samples/OpenMapTiles";
 // import MaplibreInspect from "maplibre-gl-inspect";
 // import "maplibre-gl-inspect/dist/maplibre-gl-inspect.css";
+
+const MAPTILER_API_KEY = config.MAPTILER_API_KEY;
+console.log(config, MAPTILER_API_KEY);
 
 const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 , hash: true});
 
@@ -16,11 +19,10 @@ async function loadStyle(url) {
   return res.json();
 }
 
-
 async function main() {
   const style = await loadStyle(
     'https://api.maptiler.com/maps/osm-standard/style.json?key=' +
-      process.env.MAPTILER_API_KEY
+      MAPTILER_API_KEY
   );
 
   m.setStyle(style);
