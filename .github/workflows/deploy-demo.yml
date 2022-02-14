@@ -16,11 +16,11 @@ jobs:
     - run: node --version
 
     - name: Write .env
-      run: echo "MAPTILER_API_KEY=${{ secrets.MAPTILER_API_KEY }}" > .env
+      run: echo "export default { MAPTILER_API_KEY: '${{ secrets.MAPTILER_API_KEY }}' };" > config.json
 
     - name: Install and build
       run: |
-        npm install --include=dev
+        npm install
         npm run build
 
     - name: Simple GitHub Pages Deploy Action
