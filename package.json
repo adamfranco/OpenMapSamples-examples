@@ -6,7 +6,8 @@
   "scripts": {
     "config": "if [ ! -f \"config.js\" ]; then cp config.example.js config.js; echo \"Edit config.js with your MAPTILER_API_KEY obtained at maptiler.com\"; fi",
     "start": "rm -Rf .parcel-cache dist && parcel index.html --open",
-    "build": "rm -rf .parcel-cache dist && parcel build index.html --public-url ./"
+    "build": "rm -rf .parcel-cache dist && parcel build index.html --public-url ./",
+    "dev-openmapsamples": "if [ -d ../OpenMapSamples ]; then if [ -L node_modules/openmapsamples ]; then echo \"node_modules/openmapsamples is already a link to ../OpenMapSamples/\"; else rm -Rf node_modules/openmapsamples ; ln -s ../OpenMapSamples node_modules/openmapsamples; fi; echo \"node_modules/openmapsamples is a symbolic link to ../OpenMapSamples \n\nYou can now make changes in ../OpenMapSamples and then re-run \\`npm start\\` to rerun the demo with changes. \n\nAfter commiting/pushing your changes to the OpenMapSamples package, rerunning \\`npm ci\\` will return the nodemodules directory to its former state. Running \\`npm update\\` will update the package-lock.json with the latest version of OpenMapSamples.\"; else echo \"../OpenMapSamples/ not found.\"; fi"
   },
   "repository": {
     "type": "git",

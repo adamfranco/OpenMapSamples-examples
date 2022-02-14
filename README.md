@@ -41,3 +41,18 @@ Running this command will build a self-contained build of the demo site in the `
 ```
 npm run build
 ```
+
+### Developing the OpenMapSamples package.
+
+The OpenMapSamples-examples package can be used to assist in development of OpenMapSamples.
+
+First, clone the OpenMapSamples repository next to your OpenMapSamples-examples directory.
+
+    git clone git@github.com:adamfranco/OpenMapSamples.git
+
+Then, from within the OpenMapSamples-examples package you can make your `node_modules/openmapsamples` directory a link to the working-repository you just cloned with:
+
+    cd OpenMapSamples-examples/
+    npm run dev-openmapsamples
+
+After making changes in the OpenMapSamples/ working repository you'll need to re-run `npm start` to refresh the demo.
