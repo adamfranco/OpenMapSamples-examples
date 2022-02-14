@@ -9,7 +9,6 @@ import { default as OpenMapTilesSamples } from "openmapsamples/samples/OpenMapTi
 // import "maplibre-gl-inspect/dist/maplibre-gl-inspect.css";
 
 const MAPTILER_API_KEY = config.MAPTILER_API_KEY;
-console.log(config, MAPTILER_API_KEY);
 
 const m = new Map({ container: 'map', center: [-100.05, 41.0], zoom: 3 , hash: true});
 
