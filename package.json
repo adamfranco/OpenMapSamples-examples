@@ -1,6 +1,6 @@
 {
   "name": "openmapsamples-examples",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Provides an OpenMapSamples example site.",
   "type": "module",
   "scripts": {
@@ -27,11 +27,12 @@
   },
   "homepage": "https://github.com/adamfranco/OpenMapSamples-examples#readme",
   "dependencies": {
+    "maplibre-gl": "^5.24.1",
     "maplibre-gl-inspect": "github:acalcutt/maplibre-gl-inspect",
     "openmapsamples": "github:adamfranco/OpenMapSamples",
     "openmapsamples-maplibre": "github:adamfranco/OpenMapSamples-MapLibre",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.3.1",
+    "parcel": "^2.16.4",
     "path-browserify": "^1.0.1"
   }
 }
