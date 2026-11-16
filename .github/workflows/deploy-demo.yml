@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,7 +14,12 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
 
     - run: node --version
 
@@ -20,21 +28,14 @@ jobs:
 
     - name: Install and build
       run: |
-        npm install
+        npm ci
         npm run build
 
-    - name: Simple GitHub Pages Deploy Action
-      # You may pin to the exact commit or the version.
-      # uses: rdarida/simple-github-pages-deploy-action@290913edc3f3978a087e0687a67a1cda044965c5
-      uses: rdarida/simple-github-pages-deploy-action@v1
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        # Set git config user.name
-        git-user: github-action
-        # Set git config user.email
-        git-email: github-action@github.com
-        # Set the base folder for deploy
-        git-base-folder: dist
-        # Set the commit message
-        commit-message: Simple GitHub Pages Deploy Action
-        # Set the target branch for deployment
+        # The folder to deploy
+        folder: dist
+        # The branch to deploy to
         branch: gh-pages
+        commit-message: Deploy demo
