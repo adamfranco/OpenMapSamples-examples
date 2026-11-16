@@ -1,5 +1,5 @@
 import config from "./config.js";
-import { Map, Popup } from 'maplibre-gl';
+import { Map, Popup, setWorkerUrl } from 'maplibre-gl';
 import SampleControl from 'openmapsamples-maplibre/OpenMapSamplesControl';
 import Sample from "openmapsamples/lib/Sample";
 import Layer from "openmapsamples/lib/Layer";
@@ -7,6 +7,10 @@ import { ExamplePlaceData, ExampleTransportationData } from "openmapsamples/lib/
 import { default as OpenMapTilesSamples } from "openmapsamples/samples/OpenMapTiles";
 // import MaplibreInspect from "maplibre-gl-inspect";
 // import "maplibre-gl-inspect/dist/maplibre-gl-inspect.css";
+
+// MapLibre 6 locates its worker via import.meta.url, which Parcel rewrites to a
+// file:// URL. Point it at the worker file explicitly so Parcel bundles and serves it.
+setWorkerUrl(new URL('npm:maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).href);
 
 const MAPTILER_API_KEY = config.MAPTILER_API_KEY;
 
